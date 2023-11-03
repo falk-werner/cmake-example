@@ -4,7 +4,7 @@ This repository contains an example `cmake` project to demonstrate some build-in
 
 - [x] generate pkg-config file
 - [x] unit tests using [googletest](https://github.com/google/googletest)
-- [x] static code analysis using [clang-tidy] (https://clang.llvm.org/extra/clang-tidy/)
+- [x] static code analysis using [clang-tidy](https://clang.llvm.org/extra/clang-tidy/)
 - [x] dynamic code analysis using [valgrind/memcheck](https://valgrind.org/)
 - [x] measure code coverage using [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html)
 - [X] cross-compilation and use of [qemu](https://www.qemu.org/)
