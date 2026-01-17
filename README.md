@@ -141,17 +141,18 @@ use suppression files.
 
 ## Code Coverage
 
-Code coverage is also integrated in `ctest`. To obtain coverage
-during tests, `gcov` must be setup in `CMakeLists.txt`:
+Code coverage is also integrated in `ctest`. To enable coverage
+generation, compile options and link options must be set in
+`CMakeLists.txt`:
 
 ```cmake
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -fprofile-arcs -ftest-coverage")
-link_libraries(debug gcov)
+target_compile_options(foo PUBLIC -coverage)
+target_link_options(foo PUBLIC -coverage)
 ```
 
-After that, coverage is obtained using the followin command line.
-
+After that, the test must be executed and coverage can be obtained.
 ```bash
+ctest --test-dir build
 ctest -T coverage --test-dir build
 ```
 
@@ -161,8 +162,17 @@ This comamnd will print the current coverage on command line.
 To generate an `HTML` view of the coverage, `lcov` can be used:
 
 ```bash
-lcov -c -d . -o coverage.info
-genhtml main_coverage.info --output-directory out
+# collect coverage information and store them in to coverage.info
+lcov -c -d . -o coverage.info --rc lcov_branch_coverage=1 --ignore-errors mismatch
+
+# remove coverage information of standard and system libraries
+lcov -r coverage.info "/usr*" -o coverage.info --rc lcov_branch_coverage=1
+
+# remove coverage information of test sources
+lcov -r coverage.info "test-src/*" -o coverage.info --rc lcov_branch_coverage=1
+
+# generate HTML report in out directory
+genhtml coverage.info --output-directory out --rc genhtml_branch_coverage=1
 ```
 
 ## Cross-Compilation
